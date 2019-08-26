@@ -9,8 +9,8 @@ Vue.use(VueRouter)
 const routes = [
     { path: '/', component: MessagesList },
     { path: '/auth', component: Auth },
-    { path: '/profile', component: Profile },
-    { path: '*', component: MessagesList }
+    { path: '/user/:id?', component: Profile },
+    { path: '*', component: MessagesList },
 ]
 
 export default new VueRouter({

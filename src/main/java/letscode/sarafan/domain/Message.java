@@ -32,11 +32,11 @@ public class Message {
     private LocalDateTime creationDate;
 
     @ManyToOne
-    @JoinColumn (name = "user_id")
+    @JoinColumn(name = "user_id")
     @JsonView(Views.FullMessage.class)
     private User author;
 
-    @OneToMany (mappedBy = "message", orphanRemoval = true)
+    @OneToMany(mappedBy = "message", orphanRemoval = true)
     @JsonView(Views.FullMessage.class)
     private List<Comment> comments;
 
@@ -48,5 +48,4 @@ public class Message {
     private String linkDescription;
     @JsonView(Views.FullMessage.class)
     private String linkCover;
-
 }

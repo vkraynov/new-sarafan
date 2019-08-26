@@ -8,6 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         messages,
+        profile,
         ...frontendData
     },
     getters: {
@@ -22,6 +23,7 @@ export default new Vuex.Store({
         },
         updateMessageMutation(state, message) {
             const updateIndex = state.messages.findIndex(item => item.id === message.id)
+
             state.messages = [
                 ...state.messages.slice(0, updateIndex),
                 message,
@@ -42,18 +44,19 @@ export default new Vuex.Store({
             const updateIndex = state.messages.findIndex(item => item.id === comment.message.id)
             const message = state.messages[updateIndex]
 
-            if(!message.comments.find(it => it.id === comment.id))
-            state.messages = [
-                ...state.messages.slice(0, updateIndex),
-                {
-                    ...message,
-                    comments: [
-                        ...message.comments,
-                        comment
-                    ]
-                },
-                ...state.messages.slice(updateIndex + 1)
-            ]
+            if (!message.comments.find(it => it.id === comment.id)) {
+                state.messages = [
+                    ...state.messages.slice(0, updateIndex),
+                    {
+                        ...message,
+                        comments: [
+                            ...message.comments,
+                            comment
+                        ]
+                    },
+                    ...state.messages.slice(updateIndex + 1)
+                ]
+            }
         },
         addMessagePageMutation(state, messages) {
             const targetMessages = state.messages
@@ -62,6 +65,7 @@ export default new Vuex.Store({
                     res[val.id] = val
                     return res
                 }, {})
+
             state.messages = Object.values(targetMessages)
         },
         updateTotalPagesMutation(state, totalPages) {
@@ -90,10 +94,10 @@ export default new Vuex.Store({
         },
         async removeMessageAction({commit}, message) {
             const result = await messagesApi.remove(message.id)
+
             if (result.ok) {
                 commit('removeMessageMutation', message)
             }
-
         },
         async addCommentAction({commit, state}, comment) {
             const response = await commentApi.add(comment)
@@ -106,7 +110,7 @@ export default new Vuex.Store({
 
             commit('addMessagePageMutation', data.messages)
             commit('updateTotalPagesMutation', data.totalPages)
-            commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages -1))
+            commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages - 1))
         }
     }
 })

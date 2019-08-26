@@ -4,14 +4,14 @@
             <v-toolbar-title>Sarafan</v-toolbar-title>
             <v-btn flat
                    v-if="profile"
-                   :disabled="this.$route.path === '/'"
+                   :disabled="$route.path === '/'"
                    @click="showMessages">
                 Messages
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn flat
                    v-if="profile"
-                   :disabled="this.$route.path === '/profile'"
+                   :disabled="$route.path === '/user'"
                    @click="showProfile">
                 {{profile.name}}
             </v-btn>
@@ -23,13 +23,11 @@
             <router-view></router-view>
         </v-content>
     </v-app>
-
 </template>
 
 <script>
-    import {mapMutations, mapState} from 'vuex'
-    import {addHandler} from "util/ws";
-
+    import { mapState, mapMutations } from 'vuex'
+    import { addHandler } from 'util/ws'
     export default {
         computed: mapState(['profile']),
         methods: {
@@ -43,9 +41,8 @@
                 this.$router.push('/')
             },
             showProfile() {
-                this.$router.push('/profile')
+                this.$router.push('/user')
             }
-
         },
         created() {
             addHandler(data => {
@@ -56,12 +53,12 @@
                             break
                         case 'UPDATE':
                             this.updateMessageMutation(data.body)
-                            break;
+                            break
                         case 'REMOVE':
                             this.removeMessageMutation(data.body)
                             break
                         default:
-                            console.error(`Looks like event type is unknown! "${data.eventType}"`)
+                            console.error(`Looks like the event type if unknown "${data.eventType}"`)
                     }
                 } else if (data.objectType === 'COMMENT') {
                     switch (data.eventType) {
@@ -69,12 +66,11 @@
                             this.addCommentMutation(data.body)
                             break
                         default:
-                            console.error(`Looks like event type is unknown! "${data.eventType}"`)
+                            console.error(`Looks like the event type if unknown "${data.eventType}"`)
                     }
                 } else {
-                    console.error(`Looks like object type is unknown! "${data.objectType}"`)
+                    console.error(`Looks like the object type if unknown "${data.objectType}"`)
                 }
-
             })
         },
         beforeMount() {
@@ -83,9 +79,7 @@
             }
         }
     }
-
 </script>
 
 <style>
-
 </style>
